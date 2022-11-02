@@ -3,4 +3,5 @@ defmodule ExMachinaTest do
   doctest ExMachina
   doctest ExMachina.Tape
   doctest ExMachina.State
+  doctest ExMachina.Program
 end
