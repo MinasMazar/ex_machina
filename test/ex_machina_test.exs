@@ -8,7 +8,7 @@ defmodule ExMachinaTest do
 
   setup :machine_fixture
 
-  test "executing a Turing machine program", %{machine: {tape, state, program}} do
+  test "executing a Turing machine step by step", %{machine: {tape, state, program}} do
     {tape, state, _} = ExMachina.Engine.step({tape, state, program})
     assert ExMachina.Tape.to_list(tape) == ~w[A b c d]
     assert state == 0
@@ -22,6 +22,12 @@ defmodule ExMachinaTest do
     assert state == 0
 
     {tape, state, _} = ExMachina.Engine.step({tape, state, program})
+    assert ExMachina.Tape.to_list(tape) == ~w[A B C D]
+    assert state == -1
+  end
+
+  test "executing a Turing machine program until final state", %{machine: {tape, state, program}} do
+    {tape, state, _} = ExMachina.Engine.run({tape, state, program})
     assert ExMachina.Tape.to_list(tape) == ~w[A B C D]
     assert state == -1
   end

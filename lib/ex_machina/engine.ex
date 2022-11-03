@@ -19,6 +19,16 @@ defmodule ExMachina.Engine do
   1
   """
 
+  def run({tape, state, program} = machine) do
+    with {tape, state, program} <- step(machine) do
+      if State.final?(state) do
+        {tape, state, program}
+      else
+        run({tape, state, program})
+      end
+    end
+  end
+
   def step({:error, payload}), do: {:error, payload}
   def step({tape, state, program}) do
     with symbol <- Tape.get(tape),
