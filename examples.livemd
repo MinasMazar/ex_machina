@@ -1,0 +1,66 @@
+<!-- livebook:{"autosave_interval_s":600,"persist_outputs":true} -->
+
+# Turing Machine
+
+```elixir
+path = Path.expand("../", __ENV__.file)
+
+Mix.install([
+  {:ex_machina, path: path, runtime: false}
+])
+```
+
+## Capitalize string
+
+```elixir
+program = [
+  {{"a", 0}, {"A", 0, :right}},
+  {{"b", 0}, {"B", 0, :right}},
+  {{"c", 0}, {"C", 0, :right}},
+  {{"d", 0}, {"D", -1, nil}}
+]
+
+tape = ExMachina.Tape.create(["a", "b", "c", "d"])
+{tape, state, _} = ExMachina.Engine.run({tape, 0, program})
+ExMachina.Tape.to_list(tape)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+
+22:47:06.503 [info] [[[], "a", ["b", "c", "d"]]]
+
+22:47:06.503 [info] {"a", 0} -> {"A", 0, :right}
+
+22:47:06.503 [info] [[["A"], "b", ["c", "d"]]]
+
+
+22:47:06.503 [info] [[["A"], "b", ["c", "d"]]]
+
+22:47:06.503 [info] {"b", 0} -> {"B", 0, :right}
+
+22:47:06.504 [info] [[["B", "A"], "c", ["d"]]]
+
+
+22:47:06.504 [info] [[["B", "A"], "c", ["d"]]]
+
+22:47:06.504 [info] {"c", 0} -> {"C", 0, :right}
+
+22:47:06.504 [info] [[["C", "B", "A"], "d", []]]
+
+
+22:47:06.504 [info] [[["C", "B", "A"], "d", []]]
+
+22:47:06.504 [info] {"d", 0} -> {"D", -1, nil}
+
+22:47:06.504 [info] [[["C", "B", "A"], "D", []]]
+
+
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+["A", "B", "C", "D"]
+```
